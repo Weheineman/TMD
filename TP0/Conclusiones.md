@@ -1,0 +1,1 @@
+python3 diagonal.py 200 2 0.4
