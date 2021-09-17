@@ -1,5 +1,5 @@
-from sklearn.neighbors import KNeighborsClassifier
-from sklearn.model_selection import GridSearchCV
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.model_selection import cross_val_score
 import sys
 
 # Read data.
@@ -21,16 +21,12 @@ for file, values, classes in zip(
         classes.append(str(input_list[-1]))
 
 # Fit parameters for test data.
-knn = KNeighborsClassifier()
-parameters = {"n_neighbors": range(1, 11)}
-knn = GridSearchCV(knn, parameters, cv=5)  # 5-fold cross-validation.
-knn.fit(train_values, train_classes)
-
-# Print chosen parameters.
-print(f"Parametros escogidos: {knn.best_params_}")
+tree = DecisionTreeClassifier()
+tree.fit(train_values, train_classes)
 
 # Print training score (estimated error).
-print(f"Error de entrenamiento (5-fold CV): {100 * (1 - knn.best_score_)}")
+train_score = max(cross_val_score(tree, test_values, test_classes, cv=5))
+print(f"Error de entrenamiento (5-fold CV): {100 * (1 - train_score)}%")
 
 # Print test score.
-print(f"Error de test: {100 * (1 - knn.score(test_values, test_classes))}%")
+print(f"Error de test: {100 * (1 - tree.score(test_values, test_classes))}%")
