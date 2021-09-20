@@ -30,7 +30,7 @@ knn.fit(train_values, train_classes)
 print(f"Parametros escogidos: {knn.best_params_}")
 
 # Print training score (estimated error).
-print(f"Error de entrenamiento (5-fold CV): {100 * (1 - knn.best_score_)}")
+print(f"Error estimado de test (5-fold CV): {100 * (1 - knn.best_score_)}%")
 
 # Print test score.
 print(f"Error de test: {100 * (1 - knn.score(test_values, test_classes))}%")

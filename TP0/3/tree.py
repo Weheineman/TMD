@@ -25,8 +25,8 @@ tree = DecisionTreeClassifier()
 tree.fit(train_values, train_classes)
 
 # Print training score (estimated error).
-train_score = max(cross_val_score(tree, test_values, test_classes, cv=5))
-print(f"Error de entrenamiento (5-fold CV): {100 * (1 - train_score)}%")
+train_score = max(cross_val_score(tree, train_values, train_classes, cv=5))
+print(f"Error estimado de test (5-fold CV): {100 * (1 - train_score)}%")
 
 # Print test score.
 print(f"Error de test: {100 * (1 - tree.score(test_values, test_classes))}%")

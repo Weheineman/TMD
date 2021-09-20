@@ -24,14 +24,14 @@ python3 diagonal.py 2000 2 0.4
 ### `diagonal`
 ```
 Parametros escogidos: {'n_neighbors': 5}
-Error de entrenamiento (5-fold CV): 0.5000000000000115
+Error de entrenamiento (5-fold CV): 0.5000000000000115%
 Error de test: 0.5499999999999949%
 ```
 
 ### `espirales_anidadas`
 ```
 Parametros escogidos: {'n_neighbors': 1}
-Error de entrenamiento (5-fold CV): 15.999999999999993
+Error de entrenamiento (5-fold CV): 15.999999999999993%
 Error de test: 18.25%
 ```
 
@@ -39,15 +39,15 @@ Error de test: 18.25%
 
 ### `diagonal`
 ```
-Error de entrenamiento (5-fold CV): 0.24999999999999467
+Error de entrenamiento (5-fold CV): 0.0%
 Error de test: 0.6000000000000005%
 ```
 
 ### `espirales_anidadas`
 ```
-Error de entrenamiento (5-fold CV): 7.499999999999996%
-Error de test: 26.700000000000003%
+Error de entrenamiento (5-fold CV): 19.999999999999996%
+Error de test: 27.500000000000004%
 ```
 
 ## Análisis de los resultados
-Es claro que en todos los modelos al tener tan pocos datos de test hay overfitting. Es por esto que el error de training es notablemente menor al de test. Esto se vuelve especialmente claro en el caso `diagonal` de árboles de decisión, donde el modelo entrenado resulta peor que tirar una moneda (pero bueno, el bias del modelo es particularmente susceptible al dataset).
+Es claro que en todos los modelos al tener tan pocos datos de test hay overfitting. Es por esto que el error estimado es notablemente menor al error real de test. Esto es particularmente notable en el caso `diagonal` del árbol de decisión, donde estima un error de 0%.
