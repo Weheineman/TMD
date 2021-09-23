@@ -39,15 +39,15 @@ Error de test: 18.25%
 
 ### `diagonal`
 ```
-Error de entrenamiento (5-fold CV): 0.0%
+Error estimado de test (5-fold CV): 1.9999999999999907%
 Error de test: 0.6000000000000005%
 ```
 
 ### `espirales_anidadas`
 ```
-Error de entrenamiento (5-fold CV): 19.999999999999996%
-Error de test: 27.500000000000004%
+Error estimado de test (5-fold CV): 26.99999999999999%
+Error de test: 28.400000000000002%
 ```
 
 ## Análisis de los resultados
-Es claro que en todos los modelos al tener tan pocos datos de test hay overfitting. Es por esto que el error estimado es notablemente menor al error real de test. Esto es particularmente notable en el caso `diagonal` del árbol de decisión, donde estima un error de 0%.
+Al tener tan pocos datos de entrenamiento hay tendencia al overfitting. Es por esto que el error estimado es menor al error real de test en casi todos los casos.
