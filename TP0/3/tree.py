@@ -20,13 +20,14 @@ for file, values, classes in zip(
         values.append(input_list[:-1])
         classes.append(str(input_list[-1]))
 
-# Fit parameters for test data.
 tree = DecisionTreeClassifier()
-tree.fit(train_values, train_classes)
 
 # Print training score (estimated error).
-train_score = max(cross_val_score(tree, train_values, train_classes, cv=5))
-print(f"Error estimado de test (5-fold CV): {100 * (1 - train_score)}%")
+estimated_score = cross_val_score(tree, train_values, train_classes, cv=5).mean()
+print(f"Error estimado de test (5-fold CV): {100 * (1 - estimated_score)}%")
+
+# Fit parameters for test data.
+tree.fit(train_values, train_classes)
 
 # Print test score.
 print(f"Error de test: {100 * (1 - tree.score(test_values, test_classes))}%")
