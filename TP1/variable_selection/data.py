@@ -15,7 +15,7 @@ class Data:
         """
         Reads train data from file "file_stem.data".
         """
-        self.__read_data(
+        self._read_data_(
             f"{self.file_stem}.data", self.train_values, self.train_results
         )
 
@@ -23,7 +23,7 @@ class Data:
         """
         Reads test data from file "file_stem.test".
         """
-        self.__read_data(f"{self.file_stem}.test", self.test_values, self.test_results)
+        self._read_data_(f"{self.file_stem}.test", self.test_values, self.test_results)
 
     def make_test_from_train(self, test_ratio: float = 0.2):
         """
@@ -46,7 +46,7 @@ class Data:
         self.train_values = self.train_values[test_len:]
         self.train_results = self.train_results[test_len:]
 
-    def __read_data(self, filename: str, values: List[Any], results: List[Any]):
+    def _read_data_(self, filename: str, values: List[Any], results: List[Any]):
         """
         Reads float values for the value list and a str for the result (a class).
         """

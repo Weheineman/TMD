@@ -20,7 +20,8 @@ class GreedyWrapper(ABC):
 
         self._fit_model()
 
-    def selected_variables(self):
+    def selected_variables(self) -> List[str]:
+        """Returns the name of the selected variables."""
         return [
             name for name, used in zip(self.data.variable_names, self.state) if used
         ]
