@@ -21,34 +21,34 @@ Las variables relevantes son V8, V6, V4 y V2, en orden decreciente de importanci
 ```
 Forward Wrapper usando el dataset datosA.
 Resultado de 5 ejecuciones usando SVM:
-['V10']
-['V10']
-['V10']
-['V10']
-['V10']
+['V1', 'V2', 'V3', 'V10']
+['V1', 'V2', 'V3', 'V10']
+['V1', 'V2', 'V3', 'V10']
+['V1', 'V2', 'V3', 'V10']
+['V1', 'V2', 'V3', 'V10']
 Resultado de 5 ejecuciones usando Random Forest:
-['V10']
-['V10']
-['V10']
-['V10']
-['V10']
+['V1', 'V2', 'V3', 'V5', 'V7', 'V9', 'V10']
+['V1', 'V2', 'V3', 'V7', 'V9', 'V10']
+['V1', 'V2', 'V4', 'V7', 'V9', 'V10']
+['V1', 'V4', 'V7', 'V9', 'V10']
+['V1', 'V2', 'V5', 'V10']
 ```
 
 ### Backward Wrapper
 ```
 Backward Wrapper usando el dataset datosA.
 Resultado de 5 ejecuciones usando SVM:
-['V1', 'V2', 'V3', 'V5', 'V7', 'V10']
-['V1', 'V2', 'V3', 'V5', 'V7', 'V10']
-['V1', 'V2', 'V3', 'V5', 'V7', 'V10']
-['V1', 'V2', 'V3', 'V5', 'V7', 'V10']
-['V1', 'V2', 'V3', 'V5', 'V7', 'V10']
+['V1', 'V2', 'V3', 'V10']
+['V1', 'V2', 'V3', 'V10']
+['V1', 'V2', 'V3', 'V10']
+['V1', 'V2', 'V3', 'V10']
+['V1', 'V2', 'V3', 'V10']
 Resultado de 5 ejecuciones usando Random Forest:
-['V1', 'V2', 'V3', 'V4', 'V7', 'V10']
-['V1', 'V3', 'V4', 'V5', 'V7', 'V9', 'V10']
-['V1', 'V4', 'V7', 'V9', 'V10']
-['V1', 'V3', 'V4', 'V5', 'V7', 'V9', 'V10']
-['V1', 'V2', 'V3', 'V4', 'V7', 'V9', 'V10']
+['V1', 'V4', 'V7', 'V10']
+['V1', 'V5', 'V7', 'V9', 'V10']
+['V1', 'V4', 'V7', 'V10']
+['V1', 'V3', 'V4', 'V7', 'V10']
+['V1', 'V3', 'V5', 'V7', 'V9', 'V10']
 ```
 
 ### Kruskal-Wallis
@@ -65,14 +65,14 @@ Las variables que determinan la clase son V1 y V2 en conjunto (pues la clase es 
 ```
 Forward Wrapper usando el dataset datosB.
 Resultado de 5 ejecuciones usando SVM:
-['V7']
-['V7']
-['V7']
-['V7']
-['V7']
+['V1', 'V6', 'V7']
+['V1', 'V6', 'V7']
+['V1', 'V6', 'V7']
+['V1', 'V6', 'V7']
+['V1', 'V6', 'V7']
 Resultado de 5 ejecuciones usando Random Forest:
-['V2', 'V8']
-['V8']
+['V2', 'V6', 'V8']
+['V6', 'V8']
 ['V6', 'V8']
 ['V2', 'V8']
 ['V6', 'V8']
@@ -82,17 +82,17 @@ Resultado de 5 ejecuciones usando Random Forest:
 ```
 Backward Wrapper usando el dataset datosB.
 Resultado de 5 ejecuciones usando SVM:
-['V2', 'V5', 'V6', 'V7', 'V8']
-['V2', 'V5', 'V6', 'V7', 'V8']
-['V2', 'V5', 'V6', 'V7', 'V8']
-['V2', 'V5', 'V6', 'V7', 'V8']
-['V2', 'V5', 'V6', 'V7', 'V8']
+['V6', 'V8']
+['V6', 'V8']
+['V6', 'V8']
+['V6', 'V8']
+['V6', 'V8']
 Resultado de 5 ejecuciones usando Random Forest:
-['V1', 'V5', 'V7']
-['V2', 'V5', 'V6', 'V7']
-['V1', 'V5', 'V7', 'V8']
-['V1', 'V5', 'V6', 'V7', 'V8']
-['V2', 'V5', 'V6', 'V8']
+['V6', 'V8']
+['V1', 'V7']
+['V7']
+['V1', 'V7']
+['V2', 'V8']
 ```
 
 ### Kruskal-Wallis
