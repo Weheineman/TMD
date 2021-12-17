@@ -12,11 +12,31 @@ class GreedyWrapper(ABC):
         self.model = model
         self.data = data
         self.state = []
+        self.end_state = []
+        self.best_states = []
+        self.best_states_error = []
 
-    def select_variables(self):
-        """Selects a subset of variables and trains the model with them."""
-        while self._step_():
-            pass
+    def select_variables(self, selection_size: int = -1):
+        """
+        Selects a subset of selection_size variables and trains the model with them.
+        If no selection_size is given, there can be any amount of selected variables.
+        """
+        while self.state != self.end_state and sum(self.state) != selection_size:
+            self.best_states_error.append(self._step_())
+            self.best_states.append(self.state)
+            
+
+        if selection_size == -1:
+            min_error = 1
+            for state, error in zip(self.best_states, self.best_states_error):
+                if error < min_error:
+                    min_error = error
+                    self.state = state
+        else:
+            for state in self.best_states:
+                if sum(state) == selection_size:
+                    self.state = state
+                    break
 
         self._fit_model_()
 
@@ -58,10 +78,10 @@ class GreedyWrapper(ABC):
         ]
 
     @abstractmethod
-    def _step_(self) -> bool:
+    def _step_(self):
         """
-        Returns True if changing the state by one variable improves the error, False otherwise.
-        Updates the state and predicted_error if a step is taken.
+        Moves one step (adds/removes a variable from state).
+        Chooses the variable that yields the model with the least estimated error.
         """
         pass
 
@@ -70,10 +90,10 @@ class ForwardWrapper(GreedyWrapper):
     def __init__(self, model, data: Data):
         super().__init__(model, data)
         self.state = [False] * len(data.variable_names)
-        self.predicted_error = 1
+        self.end_state = [True] * len(data.variable_names)
 
     def _step_(self) -> bool:
-        lowest_error = self.predicted_error
+        min_error = 1
         best_step = self.state
         unused_vars = [index for index, used in enumerate(self.state) if not used]
 
@@ -81,27 +101,22 @@ class ForwardWrapper(GreedyWrapper):
             next_state = self.state.copy()
             next_state[unused_index] = True
             predicted_error = self._estimate_error_(next_state)
-            if predicted_error < lowest_error:
-                lowest_error = predicted_error
+            if predicted_error < min_error:
+                min_error = predicted_error
                 best_step = next_state
 
-        # If there is an improvement, it updates the state and returns True.
-        if lowest_error < self.predicted_error:
-            self.state = best_step
-            self.predicted_error = lowest_error
-            return True
-
-        return False
+        self.state = best_step
+        return min_error
 
 
 class BackwardWrapper(GreedyWrapper):
     def __init__(self, model, data: Data):
         super().__init__(model, data)
         self.state = [True] * len(data.variable_names)
-        self.predicted_error = self._estimate_error_(self.state)
+        self.end_state = [False] * len(data.variable_names)
 
     def _step_(self) -> bool:
-        lowest_error = self.predicted_error
+        min_error = 1
         best_step = self.state
         used_vars = [index for index, used in enumerate(self.state) if used]
 
@@ -109,14 +124,9 @@ class BackwardWrapper(GreedyWrapper):
             next_state = self.state.copy()
             next_state[used_index] = False
             predicted_error = self._estimate_error_(next_state)
-            if predicted_error < lowest_error:
-                lowest_error = predicted_error
+            if predicted_error < min_error:
+                min_error = predicted_error
                 best_step = next_state
 
-        # If there is an improvement, it updates the state and returns True.
-        if lowest_error < self.predicted_error:
-            self.state = best_step
-            self.predicted_error = lowest_error
-            return True
-
-        return False
+        self.state = best_step
+        return min_error
