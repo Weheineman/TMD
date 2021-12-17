@@ -93,7 +93,7 @@ class ForwardWrapper(GreedyWrapper):
         self.end_state = [True] * len(data.variable_names)
 
     def _step_(self) -> bool:
-        min_error = 1
+        min_error = 2
         best_step = self.state
         unused_vars = [index for index, used in enumerate(self.state) if not used]
 
@@ -116,7 +116,7 @@ class BackwardWrapper(GreedyWrapper):
         self.end_state = [False] * len(data.variable_names)
 
     def _step_(self) -> bool:
-        min_error = 1
+        min_error = 2
         best_step = self.state
         used_vars = [index for index, used in enumerate(self.state) if used]
 
