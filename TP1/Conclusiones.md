@@ -14,8 +14,6 @@ El código se encuentra en la carpeta `variable_selection`. La carpeta no se lla
 # Ejercicio 2
 Los scripts utilizados están en la carpeta `2` y tienen el nombre del método que implementan.
 
-Los wrappers eligen un subconjunto de variables para cada tamaño posible (entre 1 y la cantidad de variables). Luego eligen el mejor de todos esos subconjuntos.
-
 ## `datosA`
 Las variables relevantes son V8, V6, V4 y V2, en orden decreciente de importancia. Las demás son ruido. Las variables son independientes entre sí.
 
@@ -62,7 +60,26 @@ Resultado de elegir las mejores 10 variables:
 ['V8', 'V6', 'V4', 'V2', 'V9', 'V3', 'V10', 'V5', 'V7', 'V1']
 [363.5603964631764, 70.51677695260878, 4.907299952862559, 1.0343993800215685, 0.6963688812857072, 0.462134549462462, 0.31046040479213843, 0.1482861573131231, 0.06962136119091156, 0.002317437281817547]
 ```
-Anda re bien, encontró las variables relevantes en el orden correcto. Las variables son independientes así que un análisis univariado es suficiente.
+Anda perfecto, encontró las variables relevantes en el orden correcto. Las variables son independientes así que un análisis univariado es suficiente.
+
+### RFE
+```
+RFE usando el dataset datosA.
+Resultado de 5 ejecuciones usando SVM:
+['V8', 'V6', 'V4', 'V2', 'V5', 'V7', 'V10', 'V1', 'V9', 'V3']
+['V8', 'V6', 'V4', 'V2', 'V5', 'V7', 'V10', 'V1', 'V9', 'V3']
+['V8', 'V6', 'V4', 'V2', 'V5', 'V7', 'V10', 'V1', 'V9', 'V3']
+['V8', 'V6', 'V4', 'V2', 'V5', 'V7', 'V10', 'V1', 'V9', 'V3']
+['V8', 'V6', 'V4', 'V2', 'V5', 'V7', 'V10', 'V1', 'V9', 'V3']
+Resultado de 5 ejecuciones usando Random Forest:
+['V8', 'V6', 'V4', 'V3', 'V7', 'V5', 'V2', 'V1', 'V10', 'V9']
+['V8', 'V6', 'V4', 'V3', 'V1', 'V5', 'V2', 'V7', 'V9', 'V10']
+['V8', 'V6', 'V4', 'V7', 'V3', 'V2', 'V1', 'V5', 'V10', 'V9']
+['V8', 'V6', 'V4', 'V5', 'V2', 'V1', 'V3', 'V7', 'V10', 'V9']
+['V8', 'V6', 'V4', 'V2', 'V1', 'V7', 'V3', 'V5', 'V9', 'V10']
+```
+
+Anda muy bien, me sorprende que funcione mejor que Backward Wrapper.
 
 ## `datosB`
 Las variables que determinan la clase son V1 y V2 en conjunto (pues la clase es el resultado del xor). El resto es ruido.
@@ -112,3 +129,27 @@ Resultado de elegir las mejores 10 variables:
 ```
 
 Es razonable que de cualquier cosa pues es un análisis univariado.
+
+### RFE
+```
+RFE usando el dataset datosB.
+Resultado de 5 ejecuciones usando SVM:
+['V4', 'V3', 'V2', 'V5', 'V8', 'V1', 'V6', 'V7']
+['V4', 'V3', 'V2', 'V5', 'V8', 'V1', 'V6', 'V7']
+['V4', 'V3', 'V2', 'V5', 'V8', 'V1', 'V6', 'V7']
+['V4', 'V3', 'V2', 'V5', 'V8', 'V1', 'V6', 'V7']
+['V4', 'V3', 'V2', 'V5', 'V8', 'V1', 'V6', 'V7']
+Resultado de 5 ejecuciones usando Random Forest:
+['V2', 'V1', 'V4', 'V3', 'V6', 'V7', 'V5', 'V8']
+['V2', 'V1', 'V4', 'V3', 'V6', 'V7', 'V8', 'V5']
+['V2', 'V1', 'V3', 'V4', 'V7', 'V6', 'V8', 'V5']
+['V2', 'V1', 'V3', 'V4', 'V6', 'V8', 'V5', 'V7']
+['V2', 'V1', 'V3', 'V4', 'V6', 'V7', 'V8', 'V5']
+```
+
+Es interesante cómo SVM anduvo perfecto para datosA, pero falla estrepitosamente al tener el xor. Tiene sentido porque no estamos evaluando el error real del modelo al quitar V1 o V2, sino estimando con sus vectores (independientes).
+
+Me pone contento que la estimación del RF (que no sé cuál es) funcione perfecto.
+
+# Ejercicio 3
+
