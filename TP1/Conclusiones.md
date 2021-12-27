@@ -14,6 +14,8 @@ El código se encuentra en la carpeta `variable_selection`. La carpeta no se lla
 # Ejercicio 2
 Los scripts utilizados están en la carpeta `2` y tienen el nombre del método que implementan.
 
+Los wrappers eligen un subconjunto de variables para cada tamaño posible (entre 1 y la cantidad de variables). Luego eligen el mejor de todos esos subconjuntos.
+
 ## `datosA`
 Las variables relevantes son V8, V6, V4 y V2, en orden decreciente de importancia. Las demás son ruido. Las variables son independientes entre sí.
 
@@ -33,6 +35,7 @@ Resultado de 5 ejecuciones usando Random Forest:
 ['V1', 'V4', 'V7', 'V9', 'V10']
 ['V1', 'V2', 'V5', 'V10']
 ```
+Da horrible. No puedo creer que el primer paso no sea elegir V8. Tiene que estar mal programado.
 
 ### Backward Wrapper
 ```
@@ -50,13 +53,16 @@ Resultado de 5 ejecuciones usando Random Forest:
 ['V1', 'V3', 'V4', 'V7', 'V10']
 ['V1', 'V3', 'V5', 'V7', 'V9', 'V10']
 ```
+De nuevo, tiene que estar mal programado. 
 
 ### Kruskal-Wallis
 ```
 Kruskal-Wallis usando el dataset datosA.
 Resultado de elegir las mejores 10 variables:
-[('V10', 873.1825492901849), ('V2', 860.352427996772), ('V4', 849.2039676920097), ('V7', 836.5518940031116), ('V5', 820.8703375953772), ('V9', 811.5326227925434), ('V8', 785.3658334068672), ('V3', 774.7159063947482), ('V6', 768.6628758772229), ('V1', 758.1271960780043)]
+[('V8', 363.5603964631764), ('V6', 70.51677695260878), ('V4', 4.907299952862559), ('V2', 1.0343993800215685), ('V9', 0.6963688812857072), ('V3', 0.462134549462462), ('V10', 0.31046040479213843), ('V5', 0.1482861573131231), ('V7', 0.06962136119091156), ('V1', 0.002317437281817547)]
 ```
+
+Anda re bien, encontró las variables relevantes en el orden correcto. Las variables son independientes así que un análisis univariado es suficiente.
 
 ## `datosB`
 Las variables que determinan la clase son V1 y V2 en conjunto (pues la clase es el resultado del xor).
@@ -77,6 +83,7 @@ Resultado de 5 ejecuciones usando Random Forest:
 ['V2', 'V8']
 ['V6', 'V8']
 ```
+Me pone triste que con SVM siempre haya elegido V1, pero agregarle V2 no haya mejorado el error. De igual manera, que con Random Forest haya elegido V2 en tres ejecuciones, pero nunca haya avanzado con V1.
 
 ### Backward Wrapper
 ```
@@ -95,9 +102,13 @@ Resultado de 5 ejecuciones usando Random Forest:
 ['V2', 'V8']
 ```
 
+Da horrible. Sospecho que tengo al menos un bug (pero no lo encuentro).
+
 ### Kruskal-Wallis
 ```
 Kruskal-Wallis usando el dataset datosB.
-Resultado de elegir las mejores 8 variables:
-[('V1', 794.6159061984832), ('V7', 794.6159061984832), ('V8', 780.1560059870967), ('V3', 778.5575465047164), ('V4', 773.7720033735645), ('V2', 764.2451760332273), ('V6', 728.2723508758887), ('V5', 712.9024633016412)]
+Resultado de elegir las mejores 10 variables:
+[('V3', 406.90508275030425), ('V4', 404.7793673114775), ('V2', 6.639432879993365), ('V5', 3.500965014725807), ('V7', 1.4718221517541679), ('V8', 0.5959510313987266), ('V6', 0.4877337838115636), ('V1', 0.05588899514896184)]
 ```
+
+Es razonable que de cualquier cosa pues es un análisis univariado.

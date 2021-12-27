@@ -2,6 +2,7 @@ from operator import itemgetter
 from typing import List, Tuple
 
 from scipy.stats import kruskal
+from numpy import unique
 
 from variable_selection.data import Data
 
@@ -25,18 +26,23 @@ class KruskalWallis:
 
     def _calculate_h_(self):
         """Calculates the H statistic for every variable in the training data."""
-        if self.h_statistic:
-            return
-
         variable_values = [
             [data_point[index] for data_point in self.data.train_values]
-            for index in range(len(self.data.variable_names))
+            for index, _ in enumerate(self.data.variable_names)
         ]
 
-        self.h_statistic = [
-            kruskal(values, self.data.train_results).statistic
-            for values in variable_values
-        ]
+        self.h_statistic = []
+        # Normalize classes to be [0, class_count).
+        unique_klasses, klasses = unique(self.data.train_results, return_inverse=True)
+
+        for values in variable_values:
+            # Group by class.
+            values_by_klass = [[] for _ in unique_klasses]
+            for value, klass in zip(values, klasses):
+                values_by_klass[klass].append(value)
+            
+            self.h_statistic.append(kruskal(*values_by_klass).statistic)
+
         self._sort_values_by_h_(variable_values)
 
     def _sort_values_by_h_(self, variable_values):
