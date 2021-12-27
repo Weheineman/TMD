@@ -48,7 +48,7 @@ class Data:
 
     def _read_data_(self, filename: str, values: List[Any], results: List[Any]):
         """
-        Reads float values for the value list and a str for the result (a class).
+        Reads float values for the value list and a float for the result (a class).
         """
         file = open(filename, "r")
         values.clear()
@@ -58,4 +58,4 @@ class Data:
         for line in file.readlines():
             input_list = [float(value) for value in line.replace('"', "").split()]
             values.append(input_list[:-1])
-            results.append(str(input_list[-1]))
+            results.append(float(input_list[-1]))
