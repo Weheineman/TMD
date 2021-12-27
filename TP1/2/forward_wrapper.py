@@ -20,11 +20,11 @@ print(f"Resultado de {execution_count} ejecuciones usando SVM:")
 for _ in range(execution_count):
     svm_wrapper = ForwardWrapper(SVC(), data)
     svm_wrapper.select_variables()
-    print(svm_wrapper.selected_variables())
+    print(svm_wrapper.ranking)
 
 # Run the wrapper with Random Forest.
 print(f"Resultado de {execution_count} ejecuciones usando Random Forest:")
 for _ in range(execution_count):
-    svm_wrapper = ForwardWrapper(RandomForestClassifier(), data)
-    svm_wrapper.select_variables()
-    print(svm_wrapper.selected_variables())
+    rf_wrapper = ForwardWrapper(RandomForestClassifier(), data)
+    rf_wrapper.select_variables()
+    print(rf_wrapper.ranking)

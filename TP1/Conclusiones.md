@@ -23,37 +23,37 @@ Las variables relevantes son V8, V6, V4 y V2, en orden decreciente de importanci
 ```
 Forward Wrapper usando el dataset datosA.
 Resultado de 5 ejecuciones usando SVM:
-['V1', 'V2', 'V3', 'V10']
-['V1', 'V2', 'V3', 'V10']
-['V1', 'V2', 'V3', 'V10']
-['V1', 'V2', 'V3', 'V10']
-['V1', 'V2', 'V3', 'V10']
+['V8', 'V5', 'V9', 'V7', 'V10', 'V3', 'V2', 'V4', 'V1', 'V6']
+['V8', 'V5', 'V9', 'V7', 'V10', 'V3', 'V2', 'V4', 'V1', 'V6']
+['V8', 'V5', 'V9', 'V7', 'V10', 'V3', 'V2', 'V4', 'V1', 'V6']
+['V8', 'V5', 'V9', 'V7', 'V10', 'V3', 'V2', 'V4', 'V1', 'V6']
+['V8', 'V5', 'V9', 'V7', 'V10', 'V3', 'V2', 'V4', 'V1', 'V6']
 Resultado de 5 ejecuciones usando Random Forest:
-['V1', 'V2', 'V3', 'V5', 'V7', 'V9', 'V10']
-['V1', 'V2', 'V3', 'V7', 'V9', 'V10']
-['V1', 'V2', 'V4', 'V7', 'V9', 'V10']
-['V1', 'V4', 'V7', 'V9', 'V10']
-['V1', 'V2', 'V5', 'V10']
+['V8', 'V7', 'V6', 'V4', 'V2', 'V3', 'V10', 'V5', 'V9', 'V1']
+['V8', 'V6', 'V10', 'V9', 'V4', 'V3', 'V5', 'V7', 'V2', 'V1']
+['V8', 'V6', 'V7', 'V4', 'V10', 'V3', 'V1', 'V9', 'V2', 'V5']
+['V8', 'V9', 'V10', 'V6', 'V3', 'V4', 'V7', 'V5', 'V1', 'V2']
+['V8', 'V9', 'V6', 'V10', 'V2', 'V7', 'V5', 'V1', 'V4', 'V3']
 ```
-Da horrible. No puedo creer que el primer paso no sea elegir V8. Tiene que estar mal programado.
+Funciona razonablemente bien, siempre elige primero V8. Noto que con Random Forest es muy inestable para las demás variables y que SVM es estable. Me llama la atención que funcione peor que el filtro.
 
 ### Backward Wrapper
 ```
 Backward Wrapper usando el dataset datosA.
 Resultado de 5 ejecuciones usando SVM:
-['V1', 'V2', 'V3', 'V10']
-['V1', 'V2', 'V3', 'V10']
-['V1', 'V2', 'V3', 'V10']
-['V1', 'V2', 'V3', 'V10']
-['V1', 'V2', 'V3', 'V10']
+['V8', 'V1', 'V6', 'V2', 'V10', 'V7', 'V9', 'V4', 'V3', 'V5']
+['V8', 'V1', 'V6', 'V2', 'V10', 'V7', 'V9', 'V4', 'V3', 'V5']
+['V8', 'V1', 'V6', 'V2', 'V10', 'V7', 'V9', 'V4', 'V3', 'V5']
+['V8', 'V1', 'V6', 'V2', 'V10', 'V7', 'V9', 'V4', 'V3', 'V5']
+['V8', 'V1', 'V6', 'V2', 'V10', 'V7', 'V9', 'V4', 'V3', 'V5']
 Resultado de 5 ejecuciones usando Random Forest:
-['V1', 'V4', 'V7', 'V10']
-['V1', 'V5', 'V7', 'V9', 'V10']
-['V1', 'V4', 'V7', 'V10']
-['V1', 'V3', 'V4', 'V7', 'V10']
-['V1', 'V3', 'V5', 'V7', 'V9', 'V10']
+['V8', 'V2', 'V10', 'V5', 'V7', 'V4', 'V3', 'V9', 'V1', 'V6']
+['V8', 'V10', 'V1', 'V3', 'V2', 'V7', 'V9', 'V5', 'V4', 'V6']
+['V8', 'V10', 'V1', 'V3', 'V7', 'V5', 'V2', 'V9', 'V4', 'V6']
+['V8', 'V7', 'V3', 'V5', 'V1', 'V10', 'V4', 'V2', 'V9', 'V6']
+['V8', 'V9', 'V3', 'V1', 'V10', 'V5', 'V7', 'V2', 'V4', 'V6']
 ```
-De nuevo, tiene que estar mal programado. 
+Ídem Forward Wrapper, sólo que tiene mejores resultados con SVM.
 
 ### Kruskal-Wallis
 ```
@@ -61,48 +61,46 @@ Kruskal-Wallis usando el dataset datosA.
 Resultado de elegir las mejores 10 variables:
 [('V8', 363.5603964631764), ('V6', 70.51677695260878), ('V4', 4.907299952862559), ('V2', 1.0343993800215685), ('V9', 0.6963688812857072), ('V3', 0.462134549462462), ('V10', 0.31046040479213843), ('V5', 0.1482861573131231), ('V7', 0.06962136119091156), ('V1', 0.002317437281817547)]
 ```
-
 Anda re bien, encontró las variables relevantes en el orden correcto. Las variables son independientes así que un análisis univariado es suficiente.
 
 ## `datosB`
-Las variables que determinan la clase son V1 y V2 en conjunto (pues la clase es el resultado del xor).
+Las variables que determinan la clase son V1 y V2 en conjunto (pues la clase es el resultado del xor). El resto es ruido.
 
 ### Forward Wrapper
 ```
 Forward Wrapper usando el dataset datosB.
 Resultado de 5 ejecuciones usando SVM:
-['V1', 'V6', 'V7']
-['V1', 'V6', 'V7']
-['V1', 'V6', 'V7']
-['V1', 'V6', 'V7']
-['V1', 'V6', 'V7']
+['V3', 'V4', 'V2', 'V1', 'V7', 'V8', 'V5', 'V6']
+['V3', 'V4', 'V2', 'V1', 'V7', 'V8', 'V5', 'V6']
+['V3', 'V4', 'V2', 'V1', 'V7', 'V8', 'V5', 'V6']
+['V3', 'V4', 'V2', 'V1', 'V7', 'V8', 'V5', 'V6']
+['V3', 'V4', 'V2', 'V1', 'V7', 'V8', 'V5', 'V6']
 Resultado de 5 ejecuciones usando Random Forest:
-['V2', 'V6', 'V8']
-['V6', 'V8']
-['V6', 'V8']
-['V2', 'V8']
-['V6', 'V8']
+['V3', 'V4', 'V8', 'V6', 'V5', 'V1', 'V2', 'V7']
+['V3', 'V4', 'V8', 'V6', 'V5', 'V1', 'V2', 'V7']
+['V3', 'V4', 'V5', 'V6', 'V8', 'V1', 'V2', 'V7']
+['V3', 'V4', 'V8', 'V7', 'V6', 'V5', 'V2', 'V1']
+['V3', 'V4', 'V8', 'V6', 'V5', 'V2', 'V1', 'V7']
 ```
-Me pone triste que con SVM siempre haya elegido V1, pero agregarle V2 no haya mejorado el error. De igual manera, que con Random Forest haya elegido V2 en tres ejecuciones, pero nunca haya avanzado con V1.
+Al agregar de a una variable, es azaroso cuándo elige V1 o V2. Pero cuando lo hace, inmediatamente escoge a la otra en el paso siguiente.
 
 ### Backward Wrapper
 ```
 Backward Wrapper usando el dataset datosB.
 Resultado de 5 ejecuciones usando SVM:
-['V6', 'V8']
-['V6', 'V8']
-['V6', 'V8']
-['V6', 'V8']
-['V6', 'V8']
+['V1', 'V2', 'V4', 'V3', 'V5', 'V6', 'V8', 'V7']
+['V1', 'V2', 'V4', 'V3', 'V5', 'V6', 'V8', 'V7']
+['V1', 'V2', 'V4', 'V3', 'V5', 'V6', 'V8', 'V7']
+['V1', 'V2', 'V4', 'V3', 'V5', 'V6', 'V8', 'V7']
+['V1', 'V2', 'V4', 'V3', 'V5', 'V6', 'V8', 'V7']
 Resultado de 5 ejecuciones usando Random Forest:
-['V6', 'V8']
-['V1', 'V7']
-['V7']
-['V1', 'V7']
-['V2', 'V8']
+['V1', 'V2', 'V7', 'V6', 'V5', 'V8', 'V4', 'V3']
+['V1', 'V2', 'V7', 'V6', 'V5', 'V8', 'V4', 'V3']
+['V1', 'V2', 'V7', 'V8', 'V6', 'V5', 'V3', 'V4']
+['V1', 'V2', 'V7', 'V8', 'V6', 'V5', 'V4', 'V3']
+['V1', 'V2', 'V7', 'V8', 'V6', 'V5', 'V4', 'V3']
 ```
-
-Da horrible. Sospecho que tengo al menos un bug (pero no lo encuentro).
+Al comenzar con V1 y V2, puede evaluarlas en conjunto. En todos los casos las deja como las más importantes. Funciona perfecto.
 
 ### Kruskal-Wallis
 ```
