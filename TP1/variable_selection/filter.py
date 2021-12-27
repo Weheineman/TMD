@@ -40,7 +40,7 @@ class KruskalWallis:
             values_by_klass = [[] for _ in unique_klasses]
             for value, klass in zip(values, klasses):
                 values_by_klass[klass].append(value)
-            
+
             self.h_statistic.append(kruskal(*values_by_klass).statistic)
 
         self._sort_values_by_h_(variable_values)
