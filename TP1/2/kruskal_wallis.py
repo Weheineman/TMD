@@ -19,3 +19,4 @@ kruskal_wallis.filter_variables(remaining_amount)
 # Print the result.
 print(f"Resultado de elegir las mejores {remaining_amount} variables:")
 print(kruskal_wallis.filtered_variables())
+print(kruskal_wallis.get_h_statistic())

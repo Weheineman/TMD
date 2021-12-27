@@ -1,5 +1,5 @@
 from operator import itemgetter
-from typing import List, Tuple
+from typing import List
 
 from scipy.stats import kruskal
 from numpy import unique
@@ -18,11 +18,14 @@ class KruskalWallis:
         """Filters the variable_amount variables with the highest H statistic."""
         self.remaining_variables = variable_amount
 
-    def filtered_variables(self) -> List[Tuple[str, float]]:
-        """Returns the filtered variable names with their H statistic value."""
-        return list(
-            zip(self.data.variable_names[: self.remaining_variables], self.h_statistic)
-        )
+    def filtered_variables(self) -> List[str]:
+        """Returns the filtered variable names in decreasing order of importance."""
+        return self.data.variable_names[: self.remaining_variables]
+    
+    def get_h_statistic(self) -> List[float]:
+        """Returns the H statistic value of the variables."""
+        return self.h_statistic[: self.remaining_variables]
+
 
     def _calculate_h_(self):
         """Calculates the H statistic for every variable in the training data."""

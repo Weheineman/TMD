@@ -59,7 +59,8 @@ Resultado de 5 ejecuciones usando Random Forest:
 ```
 Kruskal-Wallis usando el dataset datosA.
 Resultado de elegir las mejores 10 variables:
-[('V8', 363.5603964631764), ('V6', 70.51677695260878), ('V4', 4.907299952862559), ('V2', 1.0343993800215685), ('V9', 0.6963688812857072), ('V3', 0.462134549462462), ('V10', 0.31046040479213843), ('V5', 0.1482861573131231), ('V7', 0.06962136119091156), ('V1', 0.002317437281817547)]
+['V8', 'V6', 'V4', 'V2', 'V9', 'V3', 'V10', 'V5', 'V7', 'V1']
+[363.5603964631764, 70.51677695260878, 4.907299952862559, 1.0343993800215685, 0.6963688812857072, 0.462134549462462, 0.31046040479213843, 0.1482861573131231, 0.06962136119091156, 0.002317437281817547]
 ```
 Anda re bien, encontró las variables relevantes en el orden correcto. Las variables son independientes así que un análisis univariado es suficiente.
 
@@ -106,7 +107,8 @@ Al comenzar con V1 y V2, puede evaluarlas en conjunto. En todos los casos las de
 ```
 Kruskal-Wallis usando el dataset datosB.
 Resultado de elegir las mejores 10 variables:
-[('V3', 406.90508275030425), ('V4', 404.7793673114775), ('V2', 6.639432879993365), ('V5', 3.500965014725807), ('V7', 1.4718221517541679), ('V8', 0.5959510313987266), ('V6', 0.4877337838115636), ('V1', 0.05588899514896184)]
+['V3', 'V4', 'V2', 'V5', 'V7', 'V8', 'V6', 'V1']
+[406.90508275030425, 404.7793673114775, 6.639432879993365, 3.500965014725807, 1.4718221517541679, 0.5959510313987266, 0.4877337838115636, 0.05588899514896184]
 ```
 
 Es razonable que de cualquier cosa pues es un análisis univariado.
