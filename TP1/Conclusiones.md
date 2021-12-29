@@ -167,4 +167,17 @@ Recursive Feature Elimination RF: 282/300 = 94.0%
 Qué maravilla que es Kruskal Wallis para análisis univariado, por favor. Pareciera que si sé de antemano que las variables son independientes, es lo único que necesito (y si no, lo tiro por las dudas). Parece ser que RF anda mucho mejor que SVM (lo cual me llama la atención, porque existe un hiperplano que separa ambas clases en las variables que importan).
 Fuera de eso confirmo el bias que me dieron tus clases de que Forward Wrapper no sirve de mucho.
 
+# Ejercicio 4
+Usé el [dataset `wine`](https://archive.ics.uci.edu/ml/datasets/wine) porque tiene más de 2 clases. Quería probar si mi implementación de RFE con SVM funciona, ya que el SVM de `sklearn` devuelve un vector de estimación por cada par de clases (y me tuve que ~~robar~~ inspirar en el código fuente de RFE de `sklearn` para hacerlo andar) y con más de 2 clases deja de ser trivial. Además tiene clases balanceadas y no le faltan entradas, lo que me ahorra dolores de cabeza.
 
+
+En el script `wine_rfe_svm.py` primero separo un conjunto (balanceado según el dataset) de test. Luego, con train (haciendo CV) hago un ranking de las variables del dataset. Finalmente, usando test evalúo la performance del modelo para los subconjuntos óptimos (según el ranking) de cada cantidad de variables posible. El resultado está en `wine_rfe_svm.err` pero se ve más claramente de forma gráfica:
+
+![error_rate_graph](/4/RFE_SVM_wine_graph.png)
+
+Me preocupa un montón. Le echo la culpa a que el dataset es pequeño (y elegí sólo un 20% del mismo para test), lo que lo vuelve muy inestable. En particular me choca:
+
+* Que el error vaya aumentando con la cantidad de variables. En tus palabras, "si a un método serio le agrego una variable con ruido, no lo afecta". Esperaría que el error disminuya (o no cambie) a medida que le agrego variables.
+* Que el gráfico se parezca tanto a la evaluación incorrecta que mostraste en clase. Yo entendí que **la selección de variables es parte del modelado** así que separé un conjunto de test que el RFE no toca (de hecho, el RFE usa train como train y validación haciendo CV).
+
+Me gustaría saber tu opinión al respecto.

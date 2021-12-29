@@ -3,7 +3,7 @@ import random
 
 
 class Data:
-    def __init__(self, file_stem: str):
+    def __init__(self, file_stem: str = None):
         self.file_stem = file_stem
         self.variable_names = []
         self.test_values = []
