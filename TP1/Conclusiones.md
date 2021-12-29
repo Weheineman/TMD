@@ -12,7 +12,7 @@ Make sure that the source directory is added to your `$PYTHONPATH` environment v
 El código se encuentra en la carpeta `variable_selection`. La carpeta no se llama `1` para que el import de Python no se enoje.
 
 # Ejercicio 2
-Los scripts utilizados están en la carpeta `2` y tienen el nombre del método que implementan.
+Los scripts utilizados están en la carpeta `2` y tienen el nombre del método que utilizan.
 
 ## `datosA`
 Las variables relevantes son V8, V6, V4 y V2, en orden decreciente de importancia. Las demás son ruido. Las variables son independientes entre sí.
@@ -152,4 +152,19 @@ Es interesante cómo SVM anduvo perfecto para datosA, pero falla estrepitosament
 Me pone contento que la estimación del RF (que no sé cuál es) funcione perfecto.
 
 # Ejercicio 3
+Modifiqué `diagonal.py` para que tome sigma como input (en vez de C). Además hice un script `uniform_noise.py` que le agregó ruido uniforme y lo dejó en el mismo formato que `datosA` y `datosB`.
+
+Hice un script `scorer.py` que realiza las 30 generaciones de datos con posteriores ejecuciones de los métodos y conteo de aciertos. Para los wrappers usé sólo SVM porque un estimado bruto me dio que una corrida con RF tarda 30 minutos (de un wrapper para un conjunto de datos) y pretendo entregar los TPs antes de que me mandes a negociar la deuda externa.
+
+```
+Forward Wrapper SVM: 151/300 = 50.33333333333333%
+Backward Wrapper SVM: 204/300 = 68.0%
+Kruskal Wallis: 290/300 = 96.66666666666666%
+Recursive Feature Elimination SVM: 135/300 = 45.0%
+Recursive Feature Elimination RF: 282/300 = 94.0%
+```
+
+Qué maravilla que es Kruskal Wallis para análisis univariado, por favor. Pareciera que si sé de antemano que las variables son independientes, es lo único que necesito (y si no, lo tiro por las dudas). Parece ser que RF anda mucho mejor que SVM (lo cual me llama la atención, porque existe un hiperplano que separa ambas clases en las variables que importan).
+Fuera de eso confirmo el bias que me dieron tus clases de que Forward Wrapper no sirve de mucho.
+
 

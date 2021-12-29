@@ -34,7 +34,7 @@ class RecursiveFeatureElimination:
         variable_importance **= 2
         if variable_importance.ndim > 1:
             variable_importance = variable_importance.sum(axis=0)
-        
+
         # Indexes of the least important remove_amount variables, in increasing
         # order of importance.
         sorted_indexes = np.argsort(variable_importance)[:remove_amount]
