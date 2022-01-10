@@ -1,0 +1,30 @@
+import sys
+
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.svm import SVC
+
+from variable_selection.wrapper import BackwardWrapper
+from variable_selection.data import Data
+
+file_stem = sys.argv[1]
+print(f"Backward Wrapper usando el dataset {file_stem}.")
+
+# Read data.
+data = Data(file_stem)
+data.read_train_data()
+
+execution_count = 5
+
+# Run the wrapper with SVM.
+print(f"Resultado de {execution_count} ejecuciones usando SVM:")
+for _ in range(execution_count):
+    svm_wrapper = BackwardWrapper(SVC(), data)
+    svm_wrapper.select_variables()
+    print(svm_wrapper.ranking)
+
+# Run the wrapper with Random Forest.
+print(f"Resultado de {execution_count} ejecuciones usando Random Forest:")
+for _ in range(execution_count):
+    rf_wrapper = BackwardWrapper(RandomForestClassifier(), data)
+    rf_wrapper.select_variables()
+    print(rf_wrapper.ranking)
