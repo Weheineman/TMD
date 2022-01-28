@@ -9,25 +9,27 @@ file_stem = "crabs"
 feature_cols = ["FL", "RW", "CL", "CW", "BD"]
 klass_cols = ["sex", "sp"]
 
-print(f"PCA usando el dataset {file_stem}.")
-
 # Read data.
 data_frame = pd.read_csv(f"{file_stem}.csv")
-
-# Processed file stem.
-file_stem = f"{file_stem}_log_scale_pca"
 
 # Separate feature columns.
 X = data_frame.loc[:, feature_cols]
 
+# Processed file stem.
+file_stem = f"{file_stem}_log_pca_scale"
+
+print(f"Log-PCA-Scale usando el dataset {file_stem}.")
+
 # Apply log to the features (because the statement recommends it).
 X = np.log(X)
+
+# Apply PCA.
+X = PCA(n_components=len(feature_cols)).fit_transform(X)
 
 # Normalize features.
 X = StandardScaler().fit_transform(X)
 
-# Apply PCA.
-principal_components = PCA(n_components=len(feature_cols)).fit_transform(X)
+principal_components = X
 
 # Build PC dataframe.
 pc_data_frame = pd.DataFrame(
@@ -52,7 +54,7 @@ for klass_name in klass_cols:
             color=color,
         )
 
-    plt.title(f"PCA for dataset {file_stem} with target {klass_name}")
+    plt.title(f"{file_stem} with target {klass_name}")
     plt.xlabel(x_label)
     plt.ylabel(y_label)
     plt.legend(klass_list)
