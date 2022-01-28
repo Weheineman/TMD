@@ -5,7 +5,7 @@ from sklearn.metrics.cluster import contingency_matrix
 from sklearn.cluster import AgglomerativeClustering, KMeans
 import pandas as pd
 
-file_stem = "crabs_pca"
+file_stem = "crabs_log_scale_pca"
 feature_cols = [f"pc_{idx}" for idx in range(1, 6)]
 klass_cols = ["sex", "sp"]
 method = KMeans
@@ -41,16 +41,18 @@ purity_score_list = [
 
 # Graph clustering prediction.
 color_list = list(mcolors.TABLEAU_COLORS.keys())
+x_label = "pc_1"
+y_label = "pc_2"
 for pred in data_frame["prediction"].unique():
     idx_list = data_frame["prediction"] == pred
     plt.scatter(
-        data_frame.loc[idx_list, "pc_1"],
-        data_frame.loc[idx_list, "pc_2"],
+        data_frame.loc[idx_list, x_label],
+        data_frame.loc[idx_list, y_label],
         marker="o",
         color=color_list[pred],
     )
-plt.xlabel("pc_1")
-plt.ylabel("pc_2")
+plt.xlabel(x_label)
+plt.ylabel(y_label)
 plt.title(f"{method_name} for dataset {file_stem}")
 plt.savefig(fname=f"{file_stem}_{method_name}")
 
