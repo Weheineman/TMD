@@ -5,9 +5,7 @@ from sklearn.metrics.cluster import contingency_matrix
 from sklearn.cluster import AgglomerativeClustering, KMeans
 import pandas as pd
 
-file_stem = "crabs_log_pca_scale"
-feature_cols = [f"pc_{idx}" for idx in range(1, 6)]
-klass_cols = ["sex", "sp"]
+klass_cols = ["anno", "N_tipo"]
 method = KMeans
 method_name = "k_means"
 n_clusters = 2
@@ -19,11 +17,13 @@ def purity_score(y_true, y_pred):
     # return purity
     return np.sum(np.amax(cont_matrix, axis=0)) / np.sum(cont_matrix)
 
+# Read data.
+file_stem = "lampone_log_scale_pca"
+data_frame = pd.read_csv(f"{file_stem}.csv")
+feature_cols = [col for col in data_frame if col.startswith('pc_')]
+
 
 print(f"{method_name} usando el dataset {file_stem}.")
-
-# Read data.
-data_frame = pd.read_csv(f"{file_stem}.csv")
 
 # Separate feature columns.
 X = data_frame.loc[:, feature_cols]
