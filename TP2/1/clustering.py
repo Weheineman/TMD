@@ -5,7 +5,7 @@ from sklearn.metrics.cluster import contingency_matrix
 from sklearn.cluster import AgglomerativeClustering, KMeans
 import pandas as pd
 
-file_stem = "crabs_log_scale_pca"
+file_stem = "crabs_log_pca_scale"
 feature_cols = [f"pc_{idx}" for idx in range(1, 6)]
 klass_cols = ["sex", "sp"]
 method = KMeans
