@@ -5,36 +5,35 @@ import pandas as pd
 from sklearn.decomposition import PCA
 from sklearn.preprocessing import StandardScaler
 
-file_stem = "crabs"
-feature_cols = ["FL", "RW", "CL", "CW", "BD"]
-klass_cols = ["sex", "sp"]
-
+file_stem = "lampone"
 # Read data.
 data_frame = pd.read_csv(f"{file_stem}.csv")
+
+feature_cols = [col for col in data_frame if col.startswith('m')]
+klass_cols = ["anno", "N_tipo"]
 
 # Separate feature columns.
 X = data_frame.loc[:, feature_cols]
 
 # Processed file stem.
-file_stem = f"{file_stem}_log_pca_scale"
+file_stem = f"{file_stem}_log_scale_pca"
 
-print(f"Log-PCA-Scale usando el dataset {file_stem}.")
+print(f"Log-Scale-PCA usando el dataset {file_stem}.")
 
 # Apply log to the features (because the statement recommends it).
-X = np.log(X)
-
-# Apply PCA.
-X = PCA(n_components=len(feature_cols)).fit_transform(X)
+# Leave zeroes intact.
+X = np.ma.log(X.to_numpy()).filled(0)
 
 # Normalize features.
 X = StandardScaler().fit_transform(X)
 
-principal_components = X
+# Apply PCA.
+X = PCA().fit_transform(X)
 
 # Build PC dataframe.
 pc_data_frame = pd.DataFrame(
-    data=principal_components,
-    columns=[f"pc_{idx}" for idx in range(1, len(feature_cols) + 1)],
+    data=X,
+    columns=[f"pc_{idx}" for idx in range(1, X.shape[1] + 1)],
 )
 pc_data_frame = pd.concat([pc_data_frame, data_frame.loc[:, klass_cols]], axis=1)
 
