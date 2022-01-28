@@ -5,9 +5,10 @@ from sklearn.metrics.cluster import contingency_matrix
 from sklearn.cluster import AgglomerativeClustering, KMeans
 import pandas as pd
 
-klass_cols = ["anno", "N_tipo"]
-method = KMeans
-method_name = "k_means"
+file_stem = "crabs_log_scale_pca"
+klass_cols = ["sex", "sp"]
+method = AgglomerativeClustering
+method_name = "agglomerative"
 n_clusters = 2
 
 # https://stackoverflow.com/questions/34047540/python-clustering-purity-metric
@@ -17,10 +18,10 @@ def purity_score(y_true, y_pred):
     # return purity
     return np.sum(np.amax(cont_matrix, axis=0)) / np.sum(cont_matrix)
 
+
 # Read data.
-file_stem = "lampone_log_scale_pca"
 data_frame = pd.read_csv(f"{file_stem}.csv")
-feature_cols = [col for col in data_frame if col.startswith('pc_')]
+feature_cols = [col for col in data_frame if col.startswith("pc_")]
 
 
 print(f"{method_name} usando el dataset {file_stem}.")

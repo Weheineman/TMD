@@ -5,20 +5,19 @@ import pandas as pd
 from sklearn.decomposition import PCA
 from sklearn.preprocessing import StandardScaler
 
-file_stem = "lampone"
+file_stem = "crabs"
 # Read data.
 data_frame = pd.read_csv(f"{file_stem}.csv")
 
-feature_cols = [col for col in data_frame if col.startswith('m')]
-klass_cols = ["anno", "N_tipo"]
+feature_cols = ["FL", "RW", "CL", "CW", "BD"]
+klass_cols = ["sex", "sp"]
 
 # Separate feature columns.
 X = data_frame.loc[:, feature_cols]
 
 # Processed file stem.
 file_stem = f"{file_stem}_log_scale_pca"
-
-print(f"Log-Scale-PCA usando el dataset {file_stem}.")
+print(file_stem)
 
 # Apply log to the features (because the statement recommends it).
 # Leave zeroes intact.

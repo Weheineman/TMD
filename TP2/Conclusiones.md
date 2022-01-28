@@ -35,7 +35,6 @@ klass_cols = ["sex", "sp"]
 Parámetros de `clustering.py` para K-Means:
 
 ```python
-feature_cols = [f"pc_{idx}" for idx in range(1, 6)]
 klass_cols = ["sex", "sp"]
 method = KMeans
 method_name = "k_means"
@@ -45,13 +44,12 @@ n_clusters = 2
 Parámetros de `clustering.py` para Agglomerative:
 
 ```python
-feature_cols = [f"pc_{idx}" for idx in range(1, 6)]
 klass_cols = ["sex", "sp"]
 method = AgglomerativeClustering
 method_name = "agglomerative"
 n_clusters = 2
 ```
-### log-scale-pca
+### crabs log-scale-pca
 
 Preprocesamiento:
 ```python
@@ -61,7 +59,8 @@ file_stem = f"{file_stem}_log_scale_pca"
 print(f"Log-Scale-PCA usando el dataset {file_stem}.")
 
 # Apply log to the features (because the statement recommends it).
-X = np.log(X)
+# Leave zeroes intact.
+X = np.ma.log(X.to_numpy()).filled(0)
 
 # Normalize features.
 X = StandardScaler().fit_transform(X)
@@ -92,7 +91,7 @@ sp score: 0.615
 
 ![crabs_log_scale_pca_agglomerative](/1/crabs_log_scale_pca_agglomerative.png)
 
-### log-pca-scale
+### crabs log-pca-scale
 
 Preprocesamiento:
 ```python
@@ -102,7 +101,8 @@ file_stem = f"{file_stem}_log_pca_scale"
 print(f"Log-PCA-Scale usando el dataset {file_stem}.")
 
 # Apply log to the features (because the statement recommends it).
-X = np.log(X)
+# Leave zeroes intact.
+X = np.ma.log(X.to_numpy()).filled(0)
 
 # Apply PCA.
 X = PCA(n_components=len(feature_cols)).fit_transform(X)
@@ -140,3 +140,86 @@ K-Means logra separa perfectamente por especie! Leyendo un poco [sobre el datase
 ## lampone
 
 ![lamponne](/1/lamponne.jpg)
+
+Parámetros de `preprocess.py`:
+
+```python
+file_stem = "lampone"
+feature_cols = [col for col in data_frame if col.startswith('m')]
+klass_cols = ["anno", "N_tipo"]
+```
+
+Parámetros de `clustering.py` para K-Means:
+
+```python
+klass_cols = ["anno", "N_tipo"]
+method = KMeans
+method_name = "k_means"
+n_clusters = 2
+```
+
+Parámetros de `clustering.py` para Agglomerative:
+
+```python
+klass_cols = ["anno", "N_tipo"]
+method = AgglomerativeClustering
+method_name = "agglomerative"
+n_clusters = 2
+```
+
+### lampone log-scale-pca
+Preprocesamiento igual que en [crabs log-scale-pca](#crabs-log-scale-pca).
+
+
+![lampone_log_scale_pca_anno](/1/lampone_log_scale_pca_anno.png)
+
+![lampone_log_scale_pca_N_tipo](/1/lampone_log_scale_pca_N_tipo.png)
+
+Veo que `pc_1` separa muy bien por año.
+
+```
+k_means usando el dataset lampone_log_scale_pca.
+anno score: 0.9795918367346939
+N_tipo score: 0.5510204081632653
+```
+
+![lampone_log_scale_pca_k_means](/1/lampone_log_scale_pca_k_means.png)
+
+```
+agglomerative usando el dataset lampone_log_scale_pca.
+anno score: 0.9795918367346939
+N_tipo score: 0.5510204081632653
+```
+
+![lampone_log_scale_pca_agglomerative](/1/lampone_log_scale_pca_agglomerative.png)
+
+Ambos métodos dan el mismo clustering (me llama la atención porque es el mismo código que para crabs da clusterings distintos, es por mayor dimensionalidad?). Clasifica bien por año (excepto un punto) y mal por especie, lo que se corresponde con lo visto en las dos dimensiones del PCA.
+
+
+### lampone log-pca-scale
+Preprocesamiento igual que en [crabs log-pca-scale](#crabs-log-pca-scale).
+
+
+![lampone_log_pca_scale_anno](/1/lampone_log_pca_scale_anno.png)
+
+![lampone_log_pca_scale_N_tipo](/1/lampone_log_pca_scale_N_tipo.png)
+
+Nuevamente, `pc_1` separa por año (aunque peor que antes).
+
+```
+k_means usando el dataset lampone_log_pca_scale.
+anno score: 0.6122448979591837
+N_tipo score: 0.5510204081632653
+```
+
+![lampone_log_pca_scale_k_means](/1/lampone_log_pca_scale_k_means.png)
+
+```
+agglomerative usando el dataset lampone_log_pca_scale.
+anno score: 0.6122448979591837
+N_tipo score: 0.5510204081632653
+```
+
+![lampone_log_pca_scale_agglomerative](/1/lampone_log_pca_scale_agglomerative.png)
+
+A pesar de tener el mismo score (!) los clusterings son distintos esta vez. No encuentran ninguna clasificación. Asumo que en las componentes que no son `pc_1` los puntos están más "mezclados" por año que en log-scale-pca.
