@@ -1,14 +1,26 @@
 import matplotlib.colors as mcolors
 import matplotlib.pyplot as plt
-import pandas as pd
-from sklearn.cluster import KMeans
+import numpy as np
+from sklearn.metrics.cluster import contingency_matrix
+from sklearn.cluster import AgglomerativeClustering, KMeans
 import pandas as pd
 
 file_stem = "crabs_pca"
-feature_cols = ["pc_1", "pc_2"]
+feature_cols = [f"pc_{idx}" for idx in range(1, 6)]
 klass_cols = ["sex", "sp"]
+method = KMeans
+method_name = "k_means"
+n_clusters = 2
 
-print(f"K-Means usando el dataset {file_stem}.")
+# https://stackoverflow.com/questions/34047540/python-clustering-purity-metric
+def purity_score(y_true, y_pred):
+    # compute contingency matrix (also called confusion matrix)
+    cont_matrix = contingency_matrix(y_true, y_pred)
+    # return purity
+    return np.sum(np.amax(cont_matrix, axis=0)) / np.sum(cont_matrix)
+
+
+print(f"{method_name} usando el dataset {file_stem}.")
 
 # Read data.
 data_frame = pd.read_csv(f"{file_stem}.csv")
@@ -16,28 +28,18 @@ data_frame = pd.read_csv(f"{file_stem}.csv")
 # Separate feature columns.
 X = data_frame.loc[:, feature_cols]
 
-# Apply K-Means.
-prediction = KMeans(n_clusters=2).fit_predict(X)
+# Apply clustering.
+prediction = method(n_clusters=n_clusters).fit_predict(X)
 
 # Add prediction to data frame.
 data_frame["prediction"] = prediction
 
-# Count classes per cluster.
-hit_list = []
-for klass in klass_cols:
-    # TODO: Seguro se mejora usando dataframe.
-    hit_count = 0
-    pred_to_klass = data_frame[klass].unique()
+# Score the clustering for each target feature.
+purity_score_list = [
+    purity_score(data_frame[klass], prediction) for klass in klass_cols
+]
 
-    for pred, klass in zip(prediction, data_frame[klass]):
-        if klass == pred_to_klass[pred]:
-            hit_count += 1
-
-    # The clustering has no way to distinguish between classes, so 0 could mean any
-    # class. 9 hits and 1 miss and 9 misses and 1 hit are the same result.
-    hit_list.append(max(hit_count, len(data_frame) - hit_count))
-
-# Graph prediction.
+# Graph clustering prediction.
 color_list = list(mcolors.TABLEAU_COLORS.keys())
 for pred in data_frame["prediction"].unique():
     idx_list = data_frame["prediction"] == pred
@@ -47,9 +49,11 @@ for pred in data_frame["prediction"].unique():
         marker="o",
         color=color_list[pred],
     )
-plt.title(f"K-Means for dataset {file_stem}")
-plt.savefig(fname=f"{file_stem}_k_means")
+plt.xlabel("pc_1")
+plt.ylabel("pc_2")
+plt.title(f"{method_name} for dataset {file_stem}")
+plt.savefig(fname=f"{file_stem}_{method_name}")
 
 
-for klass, hits in zip(klass_cols, hit_list):
-    print(f"{klass} hits: {hits}")
+for klass, purity in zip(klass_cols, purity_score_list):
+    print(f"{klass} score: {purity}")
