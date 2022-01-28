@@ -17,7 +17,7 @@ Todo el código está en `1`. Los archivos R imprimen los datasets en un `.csv` 
 El script `preprocess.py` hace el preprocesamiento de los datos. Consiste en 3 pasos:
 * log: se aplica el logaritmo natural a los datos.
 * scale: se escalan los datos para que tengan media 0 y varianza 1.
-* pca: se hace un PCA de los datos en su cantidad de dimensiones (total son poquitas). Las componentes resultantes llevan el nombre `pc_n` siendo `n` el número de componente (entre 1 y cantidad de dimensiones).
+* pca: se hace un PCA de los datos en su cantidad de dimensiones (o cantidad de puntos para `lampone`, son números pequeños). Las componentes resultantes llevan el nombre `pc_n` siendo `n` el número de componente (entre 1 y cantidad de componentes).
 
 El orden de los pasos se puede alterar (pero log debe ocurrir antes que scale para tener números positivos).
 
