@@ -136,3 +136,7 @@ sp score: 0.655
 K-Means logra separa perfectamente por especie! Leyendo un poco [sobre el dataset crabs](http://rstudio-pubs-static.s3.amazonaws.com/188372_5022e757831144ebbd330657183358aa.html) parece que `pc_3` juega un papel importante. Graficando con `pc_1` y `pc_3` se ven claramente los dos clusters.
 
 ![crabs_log_pca_scale_sp_pc1_pc3](/1/crabs_log_pca_scale_sp_pc1_pc3.png)
+
+## lampone
+
+![lamponne](/1/lamponne.jpg)
