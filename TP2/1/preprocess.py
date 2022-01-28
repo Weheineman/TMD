@@ -14,6 +14,9 @@ print(f"PCA usando el dataset {file_stem}.")
 # Read data.
 data_frame = pd.read_csv(f"{file_stem}.csv")
 
+# Processed file stem.
+file_stem = f"{file_stem}_log_scale_pca"
+
 # Separate feature columns.
 X = data_frame.loc[:, feature_cols]
 
@@ -37,21 +40,27 @@ pc_data_frame = pd.concat([pc_data_frame, data_frame.loc[:, klass_cols]], axis=1
 for klass_name in klass_cols:
     klass_list = data_frame[klass_name].unique()
     color_list = list(mcolors.TABLEAU_COLORS.keys())
+    x_label = "pc_1"
+    y_label = "pc_2"
+
     for klass, color in zip(klass_list, color_list):
         idx_list = pc_data_frame[klass_name] == klass
         plt.scatter(
-            pc_data_frame.loc[idx_list, "pc_1"],
-            pc_data_frame.loc[idx_list, "pc_2"],
+            pc_data_frame.loc[idx_list, x_label],
+            pc_data_frame.loc[idx_list, y_label],
             marker="o",
             color=color,
         )
+
     plt.title(f"PCA for dataset {file_stem} with target {klass_name}")
+    plt.xlabel(x_label)
+    plt.ylabel(y_label)
     plt.legend(klass_list)
-    plt.savefig(fname=f"{file_stem}_{klass_name}_pca")
+    plt.savefig(fname=f"{file_stem}_{klass_name}")
 
 # Convert classes to integers.
 for klass in klass_cols:
     pc_data_frame[klass] = pd.factorize(pc_data_frame[klass])[0]
 
 # Export data.
-pc_data_frame.to_csv(f"{file_stem}_pca.csv")
+pc_data_frame.to_csv(f"{file_stem}.csv")
