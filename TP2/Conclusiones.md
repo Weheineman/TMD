@@ -59,7 +59,7 @@ file_stem = f"{file_stem}_log_scale_pca"
 print(f"Log-Scale-PCA usando el dataset {file_stem}.")
 
 # Apply log to the features (because the statement recommends it).
-# Leave zeroes intact.
+# Leave zeros intact.
 X = np.ma.log(X.to_numpy()).filled(0)
 
 # Normalize features.
@@ -101,7 +101,7 @@ file_stem = f"{file_stem}_log_pca_scale"
 print(f"Log-PCA-Scale usando el dataset {file_stem}.")
 
 # Apply log to the features (because the statement recommends it).
-# Leave zeroes intact.
+# Leave zeros intact.
 X = np.ma.log(X.to_numpy()).filled(0)
 
 # Apply PCA.
@@ -223,3 +223,72 @@ N_tipo score: 0.5510204081632653
 ![lampone_log_pca_scale_agglomerative](/1/lampone_log_pca_scale_agglomerative.png)
 
 A pesar de tener el mismo score (!) los clusterings son distintos esta vez. No encuentran ninguna clasificación. Asumo que en las componentes que no son `pc_1` los puntos están más "mezclados" por año que en log-scale-pca.
+
+# Ejercicio 2
+El código se encuentra en la carpeta `2`.
+
+## Consideraciones
+Por el código de ejemplo en el enunciado asumo que está bien usar K-Means como método de clustering. Para Gap Statistic usé la suma de las distancias al cuadrado (`inertia`) porque es lo que me daba `scikit`. Si hace falta que calcule las distancias de forma tradicional, avisame.
+
+# Ejercicio 3
+Los datasets y los gráficos se encuentran en la carpeta `3`.
+Preprocesé los datos primero con una transformación logarítmica, luego escalado y luego PCA (como anteriormente en [crabs log-scale-pca](#crabs-log-scale-pca)).
+
+Parámetros:
+```python
+method = KMeans
+method_name = "k_means"
+max_clusters = 10
+uniform_count = 20
+```
+
+# 4 gaussianas
+
+
+# iris
+El script `print_iris.py` imprime el dataset en un `.csv`.
+
+### Gap Statistic
+
+Parámetros:
+```python
+file_stem = "iris_log_scale_pca"
+feature_prefix = "pc_"
+```
+
+```
+Gap statistic con k_means usando el dataset iris_log_scale_pca.
+cluster size: 2
+```
+
+![iris_log_scale_pca_gap_k_means](/3/iris_log_scale_pca_gap_k_means.png)
+
+No encuentra los 3 clusters, pero si nos fijamos en qué pinta tiene el dataset procesado...
+
+![iris_log_scale_pca_target](/3/iris_log_scale_pca_target.png)
+
+...es claro que hay dos grupos de puntos "compactos". Es decir, K-Means encuentra lo que busca y Gap Statistic correctamente le dice cuándo parar. Le echo la culpa al método de clustering o al procesamiento de los datos.
+
+
+## lampone
+
+![lamponne](/1/lamponne.jpg)
+
+### Gap Statistic
+
+A este le tengo mucha fe porque se portó bien en el ejercicio 1.
+
+Parámetros:
+```python
+file_stem = "lampone_log_scale_pca"
+feature_prefix = "pc_"
+```
+
+```
+Gap statistic con k_means usando el dataset lampone_log_scale_pca.
+cluster size: 2
+```
+
+![lampone_log_scale_pca_gap_k_means](/3/lampone_log_scale_pca_gap_k_means.png)
+
+Anduvo! Qué bueno.
