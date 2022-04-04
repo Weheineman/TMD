@@ -20,7 +20,7 @@ file_stem = f"{file_stem}_log_scale_pca"
 print(file_stem)
 
 # Apply log to the features (because the statement recommends it).
-# Leave zeroes intact.
+# Leave zeros intact.
 X = np.ma.log(X.to_numpy()).filled(0)
 
 # Normalize features.
