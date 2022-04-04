@@ -243,8 +243,24 @@ uniform_count = 20
 ```
 
 # 4 gaussianas
+El script `print_gaussianas.R` imprime el dataset en un `.csv`. Le puse nombres a las columnas a mano para no renegar.
+No preprocesé este dataset porque es algo artificial que ya tiene clusters definidos (y lo intenté para ver que daba, no es algo agradable a la vista).
 
+### Gap Statistic
+Parámetros:
+```python
+file_stem = "gaussianas"
+feature_prefix = "coord_"
+```
 
+```
+Gap statistic con k_means usando el dataset gaussianas.
+cluster size: 4
+```
+
+![gaussianas_gap_k_means](/3/gaussianas_gap_k_means.png)
+
+El dataset es artificial y presenta particularmente la estructura que busca el método de clustering. No me sorprende que la Gap Statistic funcione tan bien (aunque me asusta muy levemente el espacio entre 1 y 2 clusters).
 # iris
 El script `print_iris.py` imprime el dataset en un `.csv`.
 
