@@ -1,7 +1,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import numpy.typing as npt
-from numpy.random import default_rng
 from sklearn.cluster import KMeans
 from sklearn.decomposition import PCA
 import pandas as pd
