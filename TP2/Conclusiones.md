@@ -354,3 +354,60 @@ feature_prefix = "pc_"
 ![lampone_log_scale_pca_stability_k_means](/3/lampone_log_scale_pca_stability_k_means.png)
 
 Lo mismo que dije para Gap Statistic, como K-Means anda bien se ve claramente que 2 es el único número de clusters estable.
+
+# Ejercicio 4
+
+Los gráficos y datasets están en la carpeta `4`. Usé el [dataset `wine` de scikit](https://scikit-learn.org/stable/modules/generated/sklearn.datasets.load_wine.html#sklearn.datasets.load_wine) porque está descripto como "clásico y muy fácil" y está listo para usar. `print_wine.py` genera el `.csv`.
+
+
+## Preprocesamiento
+De nuevo, preprocesé los datos como en [crabs log-scale-pca](#crabs-log-scale-pca).
+
+![wine_log_scale_pca_target](/4/wine_log_scale_pca_target.png)
+
+Hermoso, hay claramente 3 clusters "compactos". Como estoy haciendo trampa, puedo ver que se corresponden con la target feature. Aún si no fuera el caso, me daría la intuición de que hay 3 grupos de "algo" (y de que trabajar sobre estos datos probablemente tenga sentido) y, como tienen pinta de gaussianas, de que usar K-Means es buena idea.
+
+## Gap Statistic
+Vamos a comprobar si realmente K-Means encuentra 3 clusters, como uno creería a primera vista.
+
+Parámetros de `gap_statistic.py`:
+```python
+file_stem = "wine_log_scale_pca"
+feature_prefix = "pc_"
+method = KMeans
+method_name = "k_means"
+max_clusters = 10
+uniform_count = 20
+```
+
+```
+Gap statistic con k_means usando el dataset wine_log_scale_pca.
+cluster size: 3
+```
+
+![wine_log_scale_pca_gap_k_means](/4/wine_log_scale_pca_gap_k_means.png)
+
+Da claramente 3, qué bien!
+
+## Clustering
+
+Vamos a ver cuán bien le va a K-Means con 3 clusters (el resultado de la Gap Statistic).
+
+Parámetros de `clustering.py`:
+
+```python
+file_stem = "wine_log_scale_pca"
+klass_cols = ["target"]
+method = KMeans
+method_name = "k_means"
+n_clusters = 3
+```
+
+```
+k_means usando el dataset wine_log_scale_pca.
+target score: 0.949438202247191
+```
+
+![wine_log_scale_pca_k_means](/4/wine_log_scale_pca_k_means.png)
+
+K-Means encuentra los clusters que uno "visualmente" reconoce al ver el resultado del PCA. Como mayoritariamente se corresponden con las clases, el score es muy alto.
