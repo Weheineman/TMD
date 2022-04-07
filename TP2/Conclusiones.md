@@ -228,13 +228,17 @@ A pesar de tener el mismo score (!) los clusterings son distintos esta vez. No e
 El código se encuentra en la carpeta `2`.
 
 ## Consideraciones
-Por el código de ejemplo en el enunciado asumo que está bien usar K-Means como método de clustering. Para Gap Statistic usé la suma de las distancias al cuadrado (`inertia`) porque es lo que me daba `scikit`. Si hace falta que calcule las distancias de forma tradicional, avisame.
+Por el código de ejemplo en el enunciado asumo que está bien usar K-Means como método de clustering.
+
+Para Gap Statistic usé la suma de las distancias al cuadrado [`inertia` de scikit](https://scikit-learn.org/stable/modules/generated/sklearn.cluster.KMeans.html?highlight=inertia). Si hace falta que calcule las distancias de otra forma, avisame.
+
+En Stability usé [`fowlkes_mallows_score` de scikit](https://scikit-learn.org/stable/modules/generated/sklearn.metrics.fowlkes_mallows_score.html#sklearn.metrics.fowlkes_mallows_score), porque era una de las normalizaciones de las slides. Si querés que use otra (o que programe en python la que pasaste en R), avisame.
 
 # Ejercicio 3
 Los datasets y los gráficos se encuentran en la carpeta `3`.
 Preprocesé los datos primero con una transformación logarítmica, luego escalado y luego PCA (como anteriormente en [crabs log-scale-pca](#crabs-log-scale-pca)).
 
-Parámetros:
+Parámetros de Gap Statistic:
 ```python
 method = KMeans
 method_name = "k_means"
@@ -242,7 +246,15 @@ max_clusters = 10
 uniform_count = 20
 ```
 
-# 4 gaussianas
+Parámetros de Stability:
+```python
+method = KMeans
+method_name = "k_means"
+max_clusters = 10
+iterations = 20
+```
+
+## 4 gaussianas
 El script `print_gaussianas.R` imprime el dataset en un `.csv`. Le puse nombres a las columnas a mano para no renegar.
 No preprocesé este dataset porque es algo artificial que ya tiene clusters definidos (y lo intenté para ver que daba, no es algo agradable a la vista).
 
@@ -261,7 +273,19 @@ cluster size: 4
 ![gaussianas_gap_k_means](/3/gaussianas_gap_k_means.png)
 
 El dataset es artificial y presenta particularmente la estructura que busca el método de clustering. No me sorprende que la Gap Statistic funcione tan bien (aunque me asusta muy levemente el espacio entre 1 y 2 clusters).
-# iris
+
+### Stability
+Parámetros:
+```python
+file_stem = "gaussianas"
+feature_prefix = "coord_"
+```
+
+![gaussianas_stability_k_means](/3/gaussianas_stability_k_means.png)
+
+No sé por qué dibuja las líneas verticales en 1.0, pero no lo pude sacar fácilmente. Vemos que 2, 3 y 4 son estables. Usamos la regla de tomar la mayor y nos da 4 clusters, genial.
+
+## iris
 El script `print_iris.py` imprime el dataset en un `.csv`.
 
 ### Gap Statistic
@@ -285,6 +309,17 @@ No encuentra los 3 clusters, pero si nos fijamos en qué pinta tiene el dataset 
 
 ...es claro que hay dos grupos de puntos "compactos". Es decir, K-Means encuentra lo que busca y Gap Statistic correctamente le dice cuándo parar. Le echo la culpa al método de clustering o al procesamiento de los datos.
 
+### Stability
+Parámetros:
+```python
+file_stem = "iris_log_scale_pca"
+feature_prefix = "pc_"
+```
+
+![iris_log_scale_pca_stability_k_means](/3/iris_log_scale_pca_stability_k_means.png)
+
+De nuevo, "funciona" en cuanto a que nos indica parar una vez encontramos los dos grupos de puntos "compactos" que vimos en el gráfico del dataset. Tiene sentido de que a partir de 3 clusters no sea estable.
+
 
 ## lampone
 
@@ -292,7 +327,7 @@ No encuentra los 3 clusters, pero si nos fijamos en qué pinta tiene el dataset 
 
 ### Gap Statistic
 
-A este le tengo mucha fe porque se portó bien en el ejercicio 1.
+A este le tengo mucha fe porque se portó bien en el ejercicio 1 con K-Means.
 
 Parámetros:
 ```python
@@ -307,4 +342,15 @@ cluster size: 2
 
 ![lampone_log_scale_pca_gap_k_means](/3/lampone_log_scale_pca_gap_k_means.png)
 
-Anduvo! Qué bueno.
+Anduvo! Qué bueno. De nuevo, Gap Statistic encuentra una buena cantidad de clusters para el método de clustering aplicado. Como en este caso K-Means funciona bien, Gap Statistic le dice correctamente cuándo parar.
+
+### Stability
+Parámetros:
+```python
+file_stem = "lampone_log_scale_pca"
+feature_prefix = "pc_"
+```
+
+![lampone_log_scale_pca_stability_k_means](/3/lampone_log_scale_pca_stability_k_means.png)
+
+Lo mismo que dije para Gap Statistic, como K-Means anda bien se ve claramente que 2 es el único número de clusters estable.
