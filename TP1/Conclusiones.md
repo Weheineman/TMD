@@ -173,7 +173,7 @@ Usé el [dataset `wine`](https://archive.ics.uci.edu/ml/datasets/wine) porque ti
 
 En el script `wine_rfe_svm.py` primero separo un conjunto (balanceado según el dataset) de test. Luego, con train (haciendo CV) hago un ranking de las variables del dataset. Finalmente, usando test evalúo la performance del modelo para los subconjuntos óptimos (según el ranking) de cada cantidad de variables posible. El resultado está en `wine_rfe_svm.err` pero se ve más claramente de forma gráfica:
 
-![error_rate_graph](/4/RFE_SVM_wine_graph.png)
+![error_rate_graph](4/RFE_SVM_wine_graph.png)
 
 Me preocupa un montón. Le echo la culpa a que el dataset es pequeño (y elegí sólo un 20% del mismo para test), lo que lo vuelve muy inestable. En particular me choca:
 
