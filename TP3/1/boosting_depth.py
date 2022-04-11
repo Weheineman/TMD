@@ -1,7 +1,5 @@
 import matplotlib.colors as mcolors
 import matplotlib.pyplot as plt
-import numpy as np
-from sklearn.metrics.cluster import contingency_matrix
 from sklearn.ensemble import AdaBoostClassifier
 from sklearn.tree import DecisionTreeClassifier
 import pandas as pd
