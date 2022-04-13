@@ -1,4 +1,3 @@
-from black import out
 import matplotlib.colors as mcolors
 import matplotlib.pyplot as plt
 from sklearn.ensemble import RandomForestClassifier
