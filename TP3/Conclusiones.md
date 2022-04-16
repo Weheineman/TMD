@@ -58,7 +58,7 @@ n_iterations = 5
 
 ![RRL_rf](2/RRL_rf.png)
 
-Random Forest es un método que quiere funciona al revés que Boosting: arranca desde "tengo demasiada varianza" y busca reducirla haciendo un promedio de varios árboles. Es claro entonces que tomar un árbol demasiado rígido no da buenos resultados. A medida que aumenta `max_features` el método comienza a mejorar, llega a un óptimo y empeora. Esto se debe a que con `max_features = 69` es equivalente a hacer bagging (que suponíamos peor). La regla de oro de tomar la raíz cuadrada es buena (aunque en este caso no es óptimo).
+Random Forest es un método que funciona al revés que Boosting: arranca desde "tengo demasiada varianza" y busca reducirla haciendo un promedio de varios árboles. Es claro entonces que tomar un árbol demasiado rígido no da buenos resultados. A medida que aumenta `max_features` el método comienza a mejorar, llega a un óptimo y empeora. Esto se debe a que con `max_features = 69` es equivalente a hacer bagging (que suponíamos peor). La regla de oro de tomar la raíz cuadrada es buena (aunque en este caso no es óptimo).
 
 # Ejercicio 3
 ![lamponne](3/lamponne.jpg)
@@ -208,3 +208,162 @@ Estimated test error: 0.20444444444444443
 ## Conclusiones
 Random Forest anda hermoso y es muy fácil de usar. Que viva Random Forest. Los otros tres andan razonablemente bien (y parecido), pero claramente peor. En particular me llama la atención lo inestables que son los parámetros para todos los demás modelos. Le echo la culpa a la baja cantidad de puntos respecto de la cantidad de dimensiones (no hay una muestra lo suficientemente grande como para que los modelos puedan generalizar bien).
 
+# Ejercicio 4
+Todos los archivos están en `4`. Reutilicé `err_estimator.py` con cambios menores para adaptarlo a este dataset (y cambios mayores en mi paciencia, porque tardó mucho). Exploré 
+
+## Random Forest
+
+```python
+file_stem = "RRL"
+estimator = RandomForestClassifier(n_estimators=1000)
+n_splits = 5
+param_grid = {"max_features": [6, 8, 10]}
+```
+
+```
+Random Forest usando el dataset RRL.
+Validation error: 0.04107648725212465 with params: {'max_features': 10}
+Validation error: 0.037535410764872545 with params: {'max_features': 6}
+Validation error: 0.03541076487252126 with params: {'max_features': 8}
+Validation error: 0.04461756373937675 with params: {'max_features': 10}
+Validation error: 0.03682719546742208 with params: {'max_features': 6}
+Estimated test error: 0.039093484419263455
+```
+
+## Boosting
+
+Parámetros de `err_estimator.py`:
+```python
+file_stem = "RRL"
+estimator = AdaBoostClassifier(DecisionTreeClassifier(), n_estimators=200)
+n_splits = 5
+param_grid = {"base_estimator__max_depth": list(range(1,21))}
+```
+
+```
+Boosting usando el dataset RRL.
+Validation error: 0.03541076487252126 with params: {'base_estimator__max_depth': 5}
+Validation error: 0.0474504249291785 with params: {'base_estimator__max_depth': 4}
+Validation error: 0.037535410764872545 with params: {'base_estimator__max_depth': 5}
+Validation error: 0.0439093484419264 with params: {'base_estimator__max_depth': 5}
+Validation error: 0.040368271954674184 with params: {'base_estimator__max_depth': 5}
+Estimated test error: 0.04093484419263458
+```
+
+## SVM Polinomial
+Tuve que restringir mucho los parámetros para obtener algo que termine en menos de dos horas.
+Parámetros de `err_estimator.py`:
+```python
+file_stem = "RRL"
+estimator = SVC(kernel="poly")
+n_splits = 5
+param_grid = {
+    "degree": range(1, 4),
+    "C": np.logspace(-2, 1, 3),
+}
+```
+
+```
+SVM Polinomial usando el dataset RRL.
+Validation error: 0.33994334277620397 with params: {'C': 0.31622776601683794, 'degree': 1}
+Validation error: 0.3449008498583569 with params: {'C': 10.0, 'degree': 1}
+Validation error: 0.34419263456090654 with params: {'C': 0.31622776601683794, 'degree': 1}
+Validation error: 0.3449008498583569 with params: {'C': 0.31622776601683794, 'degree': 1}
+Validation error: 0.33286118980169976 with params: {'C': 0.31622776601683794, 'degree': 1}
+Estimated test error: 0.3413597733711048
+```
+
+Y una segunda corrida a ver si mejora:
+```python
+file_stem = "RRL"
+estimator = SVC(kernel="poly")
+n_splits = 5
+param_grid = {
+    "degree": range(1, 4),
+    "C": [2.5, 5, 7.5],
+}
+```
+
+```
+SVM Polinomial usando el dataset RRL.
+Validation error: 0.31869688385269124 with params: {'C': 2.5, 'degree': 1}
+Validation error: 0.3519830028328612 with params: {'C': 2.5, 'degree': 1}
+Validation error: 0.3434844192634561 with params: {'C': 7.5, 'degree': 1}
+Validation error: 0.330028328611898 with params: {'C': 2.5, 'degree': 1}
+Validation error: 0.3576487252124646 with params: {'C': 2.5, 'degree': 1}
+Estimated test error: 0.34036827195467423
+```
+
+Bueno... mejora... pero fue una pérdida de tiempo.
+
+## SVM RBF
+
+Tuve muy malas experiencias con este caso. Dejé cosas corriendo durante más de una hora con resultados horribles, por ejemplo con `err_estimator.py`:
+```python
+file_stem = "RRL"
+estimator = SVC(kernel="rbf")
+n_splits = 5
+param_grid = {
+    "gamma": np.logspace(-4, 1, 9),
+    "C": np.logspace(-4, 1, 9),
+}
+```
+
+```
+SVM RBF usando el dataset RRL.
+Validation error: 0.49150141643059486 with params: {'C': 0.5623413251903491, 'gamma': 0.00042169650342858224}
+Validation error: 0.49008498583569404 with params: {'C': 10.0, 'gamma': 0.0001}
+Validation error: 0.4978753541076487 with params: {'C': 2.371373705661655, 'gamma': 0.0001}
+Validation error: 0.4978753541076487 with params: {'C': 2.371373705661655, 'gamma': 0.0001}
+Validation error: 0.49008498583569404 with params: {'C': 2.371373705661655, 'gamma': 0.0001}
+Estimated test error: 0.4934844192634561
+```
+
+Luego de muchas corridas poco exitosas, sin querer lo corrí con parámetros vacíos (es decir, los default):
+```python
+file_stem = "RRL"
+estimator = SVC(kernel="rbf")
+n_splits = 5
+param_grid = {}
+```
+
+```
+SVM RBF usando el dataset RRL.
+Validation error: 0.3505665722379604 with params: {}
+Validation error: 0.34419263456090654 with params: {}
+Validation error: 0.33640226628895187 with params: {}
+Validation error: 0.34915014164305946 with params: {}
+Validation error: 0.3194050991501416 with params: {}
+Estimated test error: 0.3399433427762039
+```
+
+Bastante mal pero mucho mejor que mis intentos (y mucho más rápido, claro, porque no probaba distintos parámetros). Después de recomponerme de este duro golpe a mi futuro como científico de datos (y a mi ego) lo corrí con algo parecido a los parámetros estándar en `err_estimator.py`, que son:
+* `C`: `1.0`.
+* `gamma`: `scale`, en este caso `1/(n_features * X.var())` o alrededor de `1.5857258169129239e-18`.
+
+```python
+file_stem = "RRL"
+estimator = SVC(kernel="rbf")
+n_splits = 5
+param_grid = {
+    "gamma": np.logspace(-18,-13, 5),
+    "C": np.logspace(-2, 2, 5),
+}
+```
+
+```
+SVM RBF usando el dataset RRL.
+Validation error: 0.28895184135977336 with params: {'C': 10.0, 'gamma': 1e-13}
+Validation error: 0.2776203966005666 with params: {'C': 10.0, 'gamma': 3.1622776601683793e-16}
+Validation error: 0.27124645892351273 with params: {'C': 10.0, 'gamma': 5.623413251903491e-15}
+Validation error: 0.2847025495750708 with params: {'C': 1.0, 'gamma': 5.623413251903491e-15}
+Validation error: 0.2960339943342776 with params: {'C': 1.0, 'gamma': 5.623413251903491e-15}
+Estimated test error: 0.2837110481586402
+```
+
+Y con el objetivo de preservar mi sanidad hasta acá llego con este modelo.
+
+## Conclusiones
+Random Forest y Boosting andan hermoso (y ambos tienen parámetros estables). Esto me hace creer que la inestabilidad y mala performance del Boosting anterior era por falta de puntos (en la cantidad de dimensiones).
+
+Ambos SVM andan muy mal, varios órdenes de magnitud peor. Al polinomial le puedo echar la culpa a los parámetros, porque terminé haciendo una búsqueda más por "lo que tardaba un tiempo razonable" que "lo que pensaba que iba a dar bien". Pero sinceramente no sé hasta qué punto. Al RBF lo optimicé hasta el límite de mi paciencia (que fue bastante) y anduvo un poquito mejor. Concluyo que SVM anda muy mal para altas dimensiones (sin importar la cantidad de puntos) o que yo soy muy malo para elegir parámetros (el o es inclusivo).
