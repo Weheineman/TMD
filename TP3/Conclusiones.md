@@ -8,9 +8,6 @@ pip3 install -r requirements.txt
 
 Make sure that the source directory is added to your `$PYTHONPATH` environment variable.
 
-# Consideraciones generales
-Me dejé de hacer el hábil programador y (espero que para alegría tuya) aprendí un poco de `pandas`. Por lo que vi lo usan mucho con Jupyter, pero no tengo idea de cómo funciona eso. Si querés, para el próximo TP aprendo eso también. 
-
 # Ejercicio 1
 Todos los archivos están en `1`. El archivo `print_datasets.R` imprime cada dataset en un `.csv`.
 
@@ -30,7 +27,7 @@ n_estimators = 200
 
 ![esp_boosting](1/esp_boosting.png)
 
-En general anda bastante mal, pero graficando los datasets me resulta esperable el score obtenido. Se ve claramente el fenómeno de clase, en el que primero hay demasiado bias, luego demasiada varianza. Aprecio el hecho de que "a boosting le gusta tener un clasificador rígido".
+En general anda bastante mal, pero graficando los datasets me resulta esperable el score obtenido. Se ve claramente el fenómeno explicado en clase, en el que primero hay demasiado bias, luego demasiada varianza. Observo el hecho de que "a boosting le gusta tener un clasificador rígido".
 
 ## diagonal
 Parámetros de `boosting_depth.py`:
@@ -61,4 +58,4 @@ n_iterations = 5
 
 ![RRL_rf](2/RRL_rf.png)
 
-Observo algo similar a lo que ocurría con espirales anidadas respecto a la dualidad de bias y varianza. Si bien Random Forest viene del lado de arrancar con demasiada varianza (al revés que boosting), en ambos casos al hacer crecer `n_features` tenemos clasificadores individuales más flexibles (y similares entre sí). Con `n_features = 69` es equivalente a hacer bagging (que suponíamos peor). La regla de oro de tomar la raíz cuadrada es buena (aunque en este caso no es óptimo).
+Random Forest es un método que quiere funciona al revés que Boosting: arranca desde "tengo demasiada varianza" y busca reducirla haciendo un promedio de varios árboles. Es claro entonces que tomar un árbol demasiado rígido no da buenos resultados. A medida que aumenta `max_features` el método comienza a mejorar, llega a un óptimo y empeora. Esto se debe a que con `max_features = 69` es equivalente a hacer bagging (que suponíamos peor). La regla de oro de tomar la raíz cuadrada es buena (aunque en este caso no es óptimo).
