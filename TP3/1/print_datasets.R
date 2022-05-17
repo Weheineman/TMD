@@ -1,0 +1,6 @@
+load("TP4.Rdata")
+write.csv(diag_test, file = "diag_test.csv")
+write.csv(diag_train, file = "diag_train.csv")
+write.csv(esp_test, file = "esp_test.csv")
+write.csv(esp_train, file = "esp_train.csv")
+write.csv(RRL, file = "RRL.csv")
